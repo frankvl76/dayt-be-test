@@ -1,4 +1,6 @@
-﻿using Dayt.EF.Entities;
+﻿using Dayt.EF.Data.Configurations;
+using Dayt.EF.Data.Entities;
+using Dayt.EF.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dayt.EF.Data
@@ -6,6 +8,7 @@ namespace Dayt.EF.Data
     public class EventDbContext : DbContext
     {
         public DbSet<EventEntity> Events { get; set; }
+        public DbSet<EventImageEntity> EventImages { get; set; }
 
         public EventDbContext(DbContextOptions<EventDbContext> options) : base(options)
         {
@@ -17,6 +20,9 @@ namespace Dayt.EF.Data
             modelBuilder.Entity<EventEntity>().Property(e => e.Title).IsRequired().HasMaxLength(255);
             modelBuilder.Entity<EventEntity>().Property(e => e.Description).HasMaxLength(1000);
             modelBuilder.Entity<EventEntity>().Property(e => e.City).IsRequired().HasMaxLength(100);
+
+            // FluentAPI configuration for EventImageEntity
+            modelBuilder.ApplyConfiguration(new EventImageEntityConfiguration());
         }
     }
 }

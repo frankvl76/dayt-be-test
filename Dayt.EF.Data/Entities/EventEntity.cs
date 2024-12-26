@@ -1,4 +1,6 @@
-﻿namespace Dayt.EF.Entities
+﻿using Dayt.EF.Data.Entities;
+
+namespace Dayt.EF.Entities
 {
     public class EventEntity
     {
@@ -6,5 +8,7 @@
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
+
+        public ICollection<EventImageEntity> Images { get; set; } = [];
     }
 }
