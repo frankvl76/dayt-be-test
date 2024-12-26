@@ -1,5 +1,6 @@
 ﻿using Dayt.EF.Data;
 using Dayt.EF.Data.Entities;
+using Dayt.EF.Data.Exceptions;
 using Dayt.EF.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,9 +23,9 @@ namespace Dayt.EF.Logic
 
         public async Task SaveEventAsync(EventModel model)
         {
-            if(model is null)
+            if (model is null)
             {
-                throw new ArgumentNullException("Event is null");
+                throw new ValidationException("Event object can't be null");
             }
 
             //TODO: AutoMapper can be used here!

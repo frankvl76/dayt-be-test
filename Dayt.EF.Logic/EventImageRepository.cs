@@ -1,5 +1,6 @@
 ﻿using Dayt.EF.Data;
 using Dayt.EF.Data.Entities;
+using Dayt.EF.Data.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dayt.EF.Logic
@@ -7,7 +8,7 @@ namespace Dayt.EF.Logic
     public interface IEventImageRepository
     {
         Task SaveEventImageAsync(EventImageModel model);
-        Task<EventImageModel?> GetEventImagesAsync(int id);
+        Task<EventImageModel?> GetEventImageAsync(int id);
     }
 
     public class EventImageRepository : IEventImageRepository
@@ -21,6 +22,18 @@ namespace Dayt.EF.Logic
 
         public async Task SaveEventImageAsync(EventImageModel model)
         {
+            if (model is null)
+            {
+                throw new ValidationException("Event Image object can't be null");
+            }
+
+            EventModel? eventModel = await new EventRepository(_context).GetEventAsync(model.EventId);
+
+            if(eventModel is null)
+            {
+                throw new NotFoundException("Event not found"); 
+            }
+
             //TODO: AutoMapper can be used here!
             var entity = new EventImageEntity
             {
@@ -36,10 +49,13 @@ namespace Dayt.EF.Logic
             model.Id = entity.Id;
         }
 
-        public async Task<EventImageModel?> GetEventImagesAsync(int id)
+        public async Task<EventImageModel?> GetEventImageAsync(int id)
         {
             var entity = await _context.EventImages.Include("Event").FirstOrDefaultAsync(e => e.Id == id);
-            if (entity == null) return null;
+            if (entity == null)
+            {
+                throw new NotFoundException("Event image not found");
+            }
 
             //TODO: AutoMapper can be used here!
             return new EventImageModel

@@ -2,6 +2,7 @@
 {
     using Dayt.EF.Data;
     using Dayt.EF.Data.Entities;
+    using Dayt.EF.Data.Exceptions;
     using Dayt.EF.Entities;
     using Dayt.EF.Logic;
     using Microsoft.EntityFrameworkCore;
@@ -60,7 +61,7 @@
                     new EventImageModel
                     {
                         ImageType = Data.Enums.ImageTypeEnum.Thumbnail,
-                        ImageUrl = "https://www.example.com/event101.jpg",
+                        ImageUrl = "https://dayt.events/images/event101.jpg",
                         Order = 1
                     }
                 }
@@ -79,13 +80,13 @@
         }
 
         [Fact]
-        public async Task SaveEvent_NullEvent_ThrowsNullException()
+        public async Task SaveEvent_NullEvent_ThrowsException()
         {
             // Arrange
             // nothing to arrange 
 
             // Act & Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(() => _repository.SaveEventAsync(null));
+            await Assert.ThrowsAsync<ValidationException>(() => _repository.SaveEventAsync(null));
         }
     }
 }
