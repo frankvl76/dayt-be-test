@@ -131,7 +131,3 @@ The project structure is functional and well-organized. However, with project gr
 ```
 
 ---
-
-## Pull Request and Notes
-
-- A pull request has been created to merge these changes into the main branch.
