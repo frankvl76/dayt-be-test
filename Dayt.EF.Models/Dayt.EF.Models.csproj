@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Dayt.EF.Data\Dayt.EF.Data.csproj" />
+  </ItemGroup>
+
 </Project>
