@@ -11,6 +11,9 @@ namespace Dayt.EF.Logic
         Task<EventImageModel?> GetEventImageAsync(int id);
     }
 
+    /// <summary>
+    /// Repository class responsible to manage Event Image
+    /// </summary>
     public class EventImageRepository : IEventImageRepository
     {
         private readonly EventDbContext _context;
@@ -20,6 +23,15 @@ namespace Dayt.EF.Logic
             _context = context;
         }
 
+        /// <summary>
+        /// Add Event Image of exiting event
+        /// Validation: agr should not be null and event must be exist
+        /// Improvement: we can use AutoMapper to map model to entity and can use UoW design pattern
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="ValidationException"></exception>
+        /// <exception cref="NotFoundException"></exception>
         public async Task SaveEventImageAsync(EventImageModel model)
         {
             if (model is null)
@@ -49,6 +61,14 @@ namespace Dayt.EF.Logic
             model.Id = entity.Id;
         }
 
+        /// <summary>
+        /// Get Event image by id, bring single event image with event details
+        /// throw NotFoundException if image not found
+        /// Improvement: we can use AutoMapper to map entity to model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
         public async Task<EventImageModel?> GetEventImageAsync(int id)
         {
             var entity = await _context.EventImages.Include("Event").FirstOrDefaultAsync(e => e.Id == id);

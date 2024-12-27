@@ -21,6 +21,14 @@ namespace Dayt.EF.Logic
             _context = context;
         }
 
+        /// <summary>
+        /// save event with images
+        /// Validation: model should not be null
+        /// Improvement: we can use AutoMapper to map model to entity and can use UoW design pattern
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="ValidationException"></exception>
         public async Task SaveEventAsync(EventModel model)
         {
             if (model is null)
@@ -48,10 +56,20 @@ namespace Dayt.EF.Logic
             model.Id = entity.Id;
         }
 
+        /// <summary>
+        /// Get Event by Id with images
+        /// throw NotFoundException if event not found
+        /// Improvement: we can use AutoMapper to map entity to model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<EventModel?> GetEventAsync(int id)
         {
             var entity = await _context.Events.Include("Images").FirstOrDefaultAsync(e => e.Id == id);
-            if (entity == null) return null;
+            if (entity == null)
+            {
+                throw new NotFoundException("Event not found");
+            }
 
             //TODO: AutoMapper can be used here!
             return new EventModel
